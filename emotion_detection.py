@@ -10,7 +10,15 @@ def emotion_detector(text_to_analyze: str) -> str:
     response_dict = {}
     if response.status_code == 200:
         response_dict = json.loads(response.text)
-    return response_dict
+        emotions = response_dict["emotionPredictions"][0]["emotion"]
+        dominant_emotion = max(emotions, key=emotions.get)
+        result = {
+            'anger': emotions["anger"],
+            'disgust': emotions["disgust"],
+            'fear': emotions["fear"],
+            'joy': emotions["joy"],
+            'sadness': emotions["sadness"],
+            'dominant_emotion': dominant_emotion
+        }
+    return result
 
-result = emotion_detector("I love this new technology")
-print(result)
